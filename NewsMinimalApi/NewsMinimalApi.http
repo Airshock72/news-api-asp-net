@@ -1,0 +1,6 @@
+@NewsMinimalApi_HostAddress = http://localhost:5158
+
+GET {{NewsMinimalApi_HostAddress}}/news/
+Accept: application/json
+
+###

@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "U0Q1POscRwA=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\glomidze\\RiderProjects\\Training\\NewsMinimalApi\\NewsMinimalApi.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\glomidze\\.nuget\\packages\\microsoft.aspnetcore.openapi\\10.0.1\\microsoft.aspnetcore.openapi.10.0.1.nupkg.sha512",
+    "C:\\Users\\glomidze\\.nuget\\packages\\microsoft.openapi\\2.0.0\\microsoft.openapi.2.0.0.nupkg.sha512",
+    "C:\\Users\\glomidze\\.nuget\\packages\\scalar.aspnetcore\\2.11.7\\scalar.aspnetcore.2.11.7.nupkg.sha512"
+  ],
+  "logs": []
+}

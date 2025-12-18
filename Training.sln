@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewsMinimalApi", "NewsMinimalApi\NewsMinimalApi.csproj", "{8480DCD2-96EC-4667-B243-8E51B68BD732}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewsMVC", "NewsMVC\NewsMVC.csproj", "{C0332C84-FDE1-40F2-B5F9-1518D4F1BECF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8480DCD2-96EC-4667-B243-8E51B68BD732}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8480DCD2-96EC-4667-B243-8E51B68BD732}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8480DCD2-96EC-4667-B243-8E51B68BD732}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8480DCD2-96EC-4667-B243-8E51B68BD732}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C0332C84-FDE1-40F2-B5F9-1518D4F1BECF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0332C84-FDE1-40F2-B5F9-1518D4F1BECF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0332C84-FDE1-40F2-B5F9-1518D4F1BECF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0332C84-FDE1-40F2-B5F9-1518D4F1BECF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
