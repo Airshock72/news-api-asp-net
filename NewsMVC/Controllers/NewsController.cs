@@ -16,6 +16,7 @@ public class NewsController : ControllerBase
     
     [HttpGet]
     [Route("")]
+    [ProducesResponseType(typeof(GetAllNewsResponse[]), StatusCodes.Status200OK)]
     public IActionResult GetAllNews()
     {
         GetAllNewsResponse[] response = news.Select(x => new GetAllNewsResponse
@@ -30,6 +31,8 @@ public class NewsController : ControllerBase
     
     [HttpGet]
     [Route("{id}")]
+    [ProducesResponseType(typeof(GetNewsResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
     public IActionResult GetNews(Guid id)
     {
         News? foundItem = news.Find(x => x.Id == id);
@@ -49,6 +52,7 @@ public class NewsController : ControllerBase
     
     [HttpPost]
     [Route("")]
+    [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
     public IActionResult PostNews(PostNewsRequest request)
     {
         News newRequest = new()
@@ -66,6 +70,8 @@ public class NewsController : ControllerBase
 
     [HttpDelete]
     [Route("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public IActionResult DeleteNews(Guid id)
     {
         News? foundItem = news.Find(x => x.Id == id);
@@ -79,6 +85,8 @@ public class NewsController : ControllerBase
 
     [HttpPut]
     [Route("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public IActionResult PutNews(Guid id, PutNewsRequest response)
     {
         int foundItemIndex = news.FindIndex(x => x.Id == id);
@@ -92,6 +100,8 @@ public class NewsController : ControllerBase
 
     [HttpPost]
     [Route("{id}/Comments")]
+    [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public IActionResult PostNewsComment(Guid id, NewsCommentRequest request)
     {
         int foundNewsIndex = news.FindIndex(x => x.Id == id);
@@ -109,6 +119,8 @@ public class NewsController : ControllerBase
 
     [HttpDelete]
     [Route("{id}/Comments/{commentId}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public IActionResult DeleteNewsComment(Guid id, Guid commentId)
     {
         int foundNewsIndex = news.FindIndex(x => x.Id == id);
