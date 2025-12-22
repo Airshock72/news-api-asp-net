@@ -70,36 +70,39 @@ public class NewsController : ControllerBase
     
         return Ok(newRequest.Id);
     }
-    //
-    // [HttpDelete]
-    // [Route("{id}")]
-    // [ProducesResponseType(StatusCodes.Status200OK)]
-    // [ProducesResponseType(StatusCodes.Status404NotFound)]
-    // public IActionResult DeleteNews(Guid id)
-    // {
-    //     News? foundItem = news.Find(x => x.Id == id);
-    //
-    //     if (foundItem == null) return NotFound();
-    //
-    //     news.Remove(foundItem);
-    //
-    //     return Ok();
-    // }
-    //
-    // [HttpPut]
-    // [Route("{id}")]
-    // [ProducesResponseType(StatusCodes.Status200OK)]
-    // [ProducesResponseType(StatusCodes.Status404NotFound)]
-    // public IActionResult PutNews(Guid id, PutNewsRequest response)
-    // {
-    //     int foundItemIndex = news.FindIndex(x => x.Id == id);
-    //     if (foundItemIndex == -1) return NotFound();
-    //
-    //     news[foundItemIndex].Title = response.Title;
-    //     news[foundItemIndex].Content = response.Content;
-    //
-    //     return Ok();
-    // }
+    
+    [HttpDelete]
+    [Route("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> DeleteNews(Guid id)
+    {
+        News? foundItem = await _context.News.FindAsync(id);
+    
+        if (foundItem == null) return NotFound();
+    
+        _context.News.Remove(foundItem);
+        await _context.SaveChangesAsync();
+    
+        return Ok();
+    }
+    
+    [HttpPut]
+    [Route("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> PutNews(Guid id, PutNewsRequest response)
+    {
+        News? foundItem = await _context.News.FirstOrDefaultAsync(x => x.Id == id);
+        if (foundItem == null) return NotFound();
+        
+        foundItem.Title = response.Title;
+        foundItem.Content = response.Content;
+        
+        await _context.SaveChangesAsync();
+    
+        return Ok();
+    }
     //
     // [HttpPost]
     // [Route("{id}/Comments")]
