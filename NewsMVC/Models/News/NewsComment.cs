@@ -8,6 +8,6 @@ public class NewsComment
     [MaxLength(100)]
     public required string Text { get; set; }
     
-    public Guid? NewsId { get; set; }
-    public News? News { get; set; }
+    public Guid NewsId { get; set; }
+    public News News { get; set; } = null!;
 }
