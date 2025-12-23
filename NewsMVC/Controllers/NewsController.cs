@@ -56,7 +56,7 @@ public class NewsController : ControllerBase
                 { 
                     Id = x.Id, 
                     Text = x.Text 
-                }).ToList()
+                }).ToArray()
         });
     }
     

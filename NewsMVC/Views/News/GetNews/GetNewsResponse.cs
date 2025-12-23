@@ -6,7 +6,7 @@ public record GetNewsResponse
     public Guid Id { get; init; }
     public required string Title { get; init; } 
     public required string Content { get; init; }
-    public required List<GetNewsResponseComments> Comments { get; init; }
+    public required GetNewsResponseComments[] Comments { get; init; }
 }
 
 public record GetNewsResponseComments
