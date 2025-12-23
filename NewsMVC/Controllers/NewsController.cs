@@ -32,27 +32,34 @@ public class NewsController : ControllerBase
         return Ok(response);
     }
     
-    // [HttpGet]
-    // [Route("{id}")]
-    // [ProducesResponseType(typeof(GetNewsResponse), StatusCodes.Status200OK)]
-    // [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-    // public IActionResult GetNews(Guid id)
-    // {
-    //     News? foundItem = news.Find(x => x.Id == id);
-    //
-    //     if (foundItem == null) 
-    //         return NotFound("ჩანაწერი ვერ მოიძებნა");
-    //
-    //     return Ok(new GetNewsResponse
-    //     {
-    //         Id = foundItem.Id,
-    //         Content = foundItem.Content,
-    //         Title = foundItem.Title,
-    //         Date = foundItem.Date,
-    //         Comments = foundItem.Comments
-    //     });
-    // }
-    //
+    [HttpGet]
+    [Route("{id}")]
+    [ProducesResponseType(typeof(GetNewsResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetNews(Guid id)
+    {
+        News? foundItem = await _context.News
+                .Include(x => x.Comments)
+                .FirstOrDefaultAsync(x => x.Id == id);
+    
+        if (foundItem == null) 
+            return NotFound("ჩანაწერი ვერ მოიძებნა");
+    
+        return Ok(new GetNewsResponse
+        {
+            Id = foundItem.Id,
+            Content = foundItem.Content,
+            Title = foundItem.Title,
+            Date = foundItem.Date,
+            Comments = foundItem.Comments
+                .Select(x => new GetNewsResponseComments 
+                { 
+                    Id = x.Id, 
+                    Text = x.Text 
+                }).ToList()
+        });
+    }
+    
     [HttpPost]
     [Route("")]
     [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
@@ -93,7 +100,7 @@ public class NewsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> PutNews(Guid id, PutNewsRequest response)
     {
-        News? foundItem = await _context.News.FirstOrDefaultAsync(x => x.Id == id);
+        News? foundItem = await _context.News.FindAsync(id);
         if (foundItem == null) return NotFound();
         
         foundItem.Title = response.Title;
@@ -103,28 +110,31 @@ public class NewsController : ControllerBase
     
         return Ok();
     }
-    //
-    // [HttpPost]
-    // [Route("{id}/Comments")]
-    // [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
-    // [ProducesResponseType(StatusCodes.Status404NotFound)]
-    // public IActionResult PostNewsComment(Guid id, NewsCommentRequest request)
-    // {
-    //     int foundNewsIndex = news.FindIndex(x => x.Id == id);
-    //     if (foundNewsIndex == -1) return NotFound();
-    //
-    //     NewsComment newComment = new NewsComment
-    //     {
-    //         Id = Guid.NewGuid(),
-    //         Text = request.Text
-    //     };
-    //
-    //     news[foundNewsIndex].Comments.Add(newComment);
-    //     return Ok(newComment.Id);
-    // }
-    //
+    
+    [HttpPost]
+    [Route("{id}/Comments")]
+    [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> PostNewsComment(Guid id, NewsCommentRequest request)
+    {
+        int foundNews = await _context.News.CountAsync(x => x.Id == id);
+        if (foundNews == 0) return NotFound();
+    
+        NewsComment newComment = new NewsComment
+        {
+            Id = Guid.NewGuid(),
+            Text = request.Text,
+            NewsId = id
+        };
+        
+        _context.NewsComments.Add(newComment);
+        await _context.SaveChangesAsync();
+        
+        return Ok(newComment.Id);
+    }
+    
     // [HttpDelete]
-    // [Route("{id}/Comments/{commentId}")]
+    // [Route("{id}/Comments/{commentId}")0]
     // [ProducesResponseType(StatusCodes.Status200OK)]
     // [ProducesResponseType(StatusCodes.Status404NotFound)]
     // public IActionResult DeleteNewsComment(Guid id, Guid commentId)

@@ -9,4 +9,13 @@ public class TrainingDataContext : DbContext
     
     public DbSet<News> News { get; set; }
     public DbSet<NewsComment> NewsComments { get; set; }
+    
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<News>()
+            .HasMany(n => n.Comments)
+            .WithOne(nc => nc.News)
+            .HasForeignKey(n => n.NewsId)
+            .OnDelete(DeleteBehavior.Restrict);
+    }
 }

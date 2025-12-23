@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NewsMVC.Data;
 
@@ -10,9 +11,11 @@ using NewsMVC.Data;
 namespace NewsMVC.Migrations
 {
     [DbContext(typeof(TrainingDataContext))]
-    partial class TrainingDataContextModelSnapshot : ModelSnapshot
+    [Migration("20251223060504_AddNewsRelationToComments")]
+    partial class AddNewsRelationToComments
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.1");
