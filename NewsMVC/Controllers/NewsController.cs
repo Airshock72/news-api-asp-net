@@ -133,21 +133,23 @@ public class NewsController : ControllerBase
         return Ok(newComment.Id);
     }
     
-    // [HttpDelete]
-    // [Route("{id}/Comments/{commentId}")0]
-    // [ProducesResponseType(StatusCodes.Status200OK)]
-    // [ProducesResponseType(StatusCodes.Status404NotFound)]
-    // public IActionResult DeleteNewsComment(Guid id, Guid commentId)
-    // {
-    //     int foundNewsIndex = news.FindIndex(x => x.Id == id);
-    //     if (foundNewsIndex == -1) 
-    //         return NotFound();
-    //
-    //     int foundCommentIndex = news[foundNewsIndex].Comments.FindIndex(x => x.Id == commentId);
-    //     if (foundCommentIndex == -1) 
-    //         return NotFound();
-    //
-    //     news[foundCommentIndex].Comments.RemoveAt(foundCommentIndex);
-    //     return Ok();
-    // }
+    [HttpDelete]
+    [Route("{id}/Comments/{commentId}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> DeleteNewsComment(Guid id, Guid commentId)
+    {
+        News? foundNews = await _context.News
+            .Include(x => x.Comments)
+            .FirstOrDefaultAsync(x => x.Id == id);
+        if (foundNews == null) return NotFound();
+        
+        NewsComment? foundComment = foundNews.Comments.Find(x => x.Id == commentId);
+        if (foundComment == null) return NotFound();
+        
+        _context.NewsComments.Remove(foundComment);
+        await _context.SaveChangesAsync();
+        
+        return Ok();
+    }
 }
