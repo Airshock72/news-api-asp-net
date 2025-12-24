@@ -17,20 +17,22 @@ public class NewsController : ControllerBase
 
     public NewsController(NewsRepository newsRepository) { _newsRepository = newsRepository; }
     
-    // [HttpGet] 
-    // [Route("")]
-    // [ProducesResponseType(typeof(GetAllNewsResponse[]), StatusCodes.Status200OK)]
-    // public async Task<IActionResult> GetAllNews()
-    // {
-    //     GetAllNewsResponse[] response = await _context.News.Select(x => new GetAllNewsResponse
-    //     {
-    //         Id = x.Id,
-    //         Title = x.Title,
-    //         Date = x.Date
-    //     }).ToArrayAsync();
-    //
-    //     return Ok(response);
-    // }
+    [HttpGet] 
+    [Route("")]
+    [ProducesResponseType(typeof(GetAllNewsResponse[]), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetAllNews()
+    {
+        News[] allNews = await _newsRepository.GetAll();
+
+        GetAllNewsResponse[] response = allNews.Select(x => new GetAllNewsResponse
+        {
+            Id = x.Id,
+            Title = x.Title,
+            Date = x.Date
+        }).ToArray();
+    
+        return Ok(response);
+    }
     
     // [HttpGet]
     // [Route("{id}")]
@@ -88,7 +90,8 @@ public class NewsController : ControllerBase
     
         if (foundItem == null) return NotFound();
     
-        await _newsRepository.RemoveItem(foundItem);
+        _newsRepository.RemoveItem(foundItem);
+        await _newsRepository.SaveChanges();
     
         return Ok();
     }
