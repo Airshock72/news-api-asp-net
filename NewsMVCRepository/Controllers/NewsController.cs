@@ -60,23 +60,23 @@ public class NewsController : ControllerBase
         });
     }
     
-    // [HttpPost]
-    // [Route("")]
-    // [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
-    // public async Task<IActionResult> PostNews(PostNewsRequest request)
-    // {
-    //     News newRequest = new()
-    //     {
-    //         Date = DateTime.UtcNow,
-    //         Title = request.Title,
-    //         Content = request.Content
-    //     };
-    //
-    //     _context.News.Add(newRequest);
-    //     await _context.SaveChangesAsync();
-    //
-    //     return Ok(newRequest.Id);
-    // }
+    [HttpPost]
+    [Route("")]
+    [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
+    public async Task<IActionResult> PostNews(PostNewsRequest request)
+    {
+        News newRequest = new()
+        {
+            Date = DateTime.UtcNow,
+            Title = request.Title,
+            Content = request.Content
+        };
+
+        _newsRepository.AddItem(newRequest);
+        await _newsRepository.SaveChanges();
+    
+        return Ok(newRequest.Id);
+    }
     
     [HttpDelete]
     [Route("{id}")]

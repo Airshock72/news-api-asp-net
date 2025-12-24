@@ -39,4 +39,9 @@ public class NewsRepository
             .Include(x => x.Comments)
             .FirstOrDefaultAsync(x => x.Id == id);
     }
+
+    public void AddItem(News news)
+    {
+        _context.News.Add(news);
+    }
 }
