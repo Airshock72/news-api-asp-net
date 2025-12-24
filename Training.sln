@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewsMinimalApi", "NewsMinim
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewsMVC", "NewsMVC\NewsMVC.csproj", "{C0332C84-FDE1-40F2-B5F9-1518D4F1BECF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewsMVCRepository", "NewsMVCRepository\NewsMVCRepository.csproj", "{F8869A63-CFFD-4D46-856F-55F892B83278}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{C0332C84-FDE1-40F2-B5F9-1518D4F1BECF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C0332C84-FDE1-40F2-B5F9-1518D4F1BECF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C0332C84-FDE1-40F2-B5F9-1518D4F1BECF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F8869A63-CFFD-4D46-856F-55F892B83278}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8869A63-CFFD-4D46-856F-55F892B83278}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8869A63-CFFD-4D46-856F-55F892B83278}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8869A63-CFFD-4D46-856F-55F892B83278}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
