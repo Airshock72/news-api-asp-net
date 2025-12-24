@@ -34,33 +34,31 @@ public class NewsController : ControllerBase
         return Ok(response);
     }
     
-    // [HttpGet]
-    // [Route("{id}")]
-    // [ProducesResponseType(typeof(GetNewsResponse), StatusCodes.Status200OK)]
-    // [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-    // public async Task<IActionResult> GetNews(Guid id)
-    // {
-    //     News? foundItem = await _context.News
-    //             .Include(x => x.Comments)
-    //             .FirstOrDefaultAsync(x => x.Id == id);
-    //
-    //     if (foundItem == null) 
-    //         return NotFound("ჩანაწერი ვერ მოიძებნა");
-    //
-    //     return Ok(new GetNewsResponse
-    //     {
-    //         Id = foundItem.Id,
-    //         Content = foundItem.Content,
-    //         Title = foundItem.Title,
-    //         Date = foundItem.Date,
-    //         Comments = foundItem.Comments
-    //             .Select(x => new GetNewsResponseComments 
-    //             { 
-    //                 Id = x.Id, 
-    //                 Text = x.Text 
-    //             }).ToArray()
-    //     });
-    // }
+    [HttpGet]
+    [Route("{id}")]
+    [ProducesResponseType(typeof(GetNewsResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetNews(Guid id)
+    {
+        News? foundItem = await _newsRepository.GetItem(id);
+    
+        if (foundItem == null) 
+            return NotFound("ჩანაწერი ვერ მოიძებნა");
+    
+        return Ok(new GetNewsResponse
+        {
+            Id = foundItem.Id,
+            Content = foundItem.Content,
+            Title = foundItem.Title,
+            Date = foundItem.Date,
+            Comments = foundItem.Comments
+                .Select(x => new GetNewsResponseComments 
+                { 
+                    Id = x.Id, 
+                    Text = x.Text 
+                }).ToArray()
+        });
+    }
     
     // [HttpPost]
     // [Route("")]
