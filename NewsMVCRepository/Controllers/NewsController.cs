@@ -94,22 +94,22 @@ public class NewsController : ControllerBase
         return Ok();
     }
     
-    // [HttpPut]
-    // [Route("{id}")]
-    // [ProducesResponseType(StatusCodes.Status200OK)]
-    // [ProducesResponseType(StatusCodes.Status404NotFound)]
-    // public async Task<IActionResult> PutNews(Guid id, PutNewsRequest response)
-    // {
-    //     News? foundItem = await _context.News.FindAsync(id);
-    //     if (foundItem == null) return NotFound();
-    //     
-    //     foundItem.Title = response.Title;
-    //     foundItem.Content = response.Content;
-    //     
-    //     await _context.SaveChangesAsync();
-    //
-    //     return Ok();
-    // }
+    [HttpPut]
+    [Route("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> PutNews(Guid id, PutNewsRequest response)
+    {
+        News? foundItem = await _newsRepository.GetItem(id);
+        if (foundItem == null) return NotFound();
+        
+        foundItem.Title = response.Title;
+        foundItem.Content = response.Content;
+        
+        await _newsRepository.SaveChanges();
+    
+        return Ok();
+    }
     
     // [HttpPost]
     // [Route("{id}/Comments")]
