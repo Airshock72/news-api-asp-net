@@ -14,8 +14,16 @@ namespace NewsMVCRepository.Controllers;
 public class NewsController : ControllerBase
 {
     private readonly NewsRepository _newsRepository;
+    private readonly NewsCommentsRepository _newsCommentsRepository;
 
-    public NewsController(NewsRepository newsRepository) { _newsRepository = newsRepository; }
+    public NewsController(
+        NewsRepository newsRepository,
+        NewsCommentsRepository newsCommentsRepository
+    )
+    {
+        _newsRepository = newsRepository;
+        _newsCommentsRepository = newsCommentsRepository;
+    }
     
     [HttpGet] 
     [Route("")]
@@ -100,7 +108,7 @@ public class NewsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> PutNews(Guid id, PutNewsRequest response)
     {
-        News? foundItem = await _newsRepository.GetItem(id);
+        News? foundItem = await _newsRepository.GetById(id);
         if (foundItem == null) return NotFound();
         
         foundItem.Title = response.Title;
@@ -111,45 +119,43 @@ public class NewsController : ControllerBase
         return Ok();
     }
     
-    // [HttpPost]
-    // [Route("{id}/Comments")]
-    // [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
-    // [ProducesResponseType(StatusCodes.Status404NotFound)]
-    // public async Task<IActionResult> PostNewsComment(Guid id, NewsCommentRequest request)
-    // {
-    //     int foundNews = await _context.News.CountAsync(x => x.Id == id);
-    //     if (foundNews == 0) return NotFound();
-    //
-    //     NewsComment newComment = new NewsComment
-    //     {
-    //         Id = Guid.NewGuid(),
-    //         Text = request.Text,
-    //         NewsId = id
-    //     };
-    //     
-    //     _context.NewsComments.Add(newComment);
-    //     await _context.SaveChangesAsync();
-    //     
-    //     return Ok(newComment.Id);
-    // }
+    [HttpPost]
+    [Route("{id}/Comments")]
+    [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> PostNewsComment(Guid id, NewsCommentRequest request)
+    {
+        int foundNews = await _newsRepository.CountNews(id);
+        if (foundNews == 0) return NotFound();
     
-    // [HttpDelete]
-    // [Route("{id}/Comments/{commentId}")]
-    // [ProducesResponseType(StatusCodes.Status200OK)]
-    // [ProducesResponseType(StatusCodes.Status404NotFound)]
-    // public async Task<IActionResult> DeleteNewsComment(Guid id, Guid commentId)
-    // {
-    //     News? foundNews = await _context.News
-    //         .Include(x => x.Comments)
-    //         .FirstOrDefaultAsync(x => x.Id == id);
-    //     if (foundNews == null) return NotFound();
-    //     
-    //     NewsComment? foundComment = foundNews.Comments.Find(x => x.Id == commentId);
-    //     if (foundComment == null) return NotFound();
-    //     
-    //     _context.NewsComments.Remove(foundComment);
-    //     await _context.SaveChangesAsync();
-    //     
-    //     return Ok();
-    // }
+        NewsComment newComment = new NewsComment
+        {
+            Id = Guid.NewGuid(),
+            Text = request.Text,
+            NewsId = id
+        };
+        
+        _newsCommentsRepository.AddItem(newComment);
+        await _newsRepository.SaveChanges();
+        
+        return Ok(newComment.Id);
+    }
+    
+    [HttpDelete]
+    [Route("{id}/Comments/{commentId}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> DeleteNewsComment(Guid id, Guid commentId)
+    {
+        News? foundNews = await _newsRepository.GetItem(id);
+        if (foundNews == null) return NotFound();
+        
+        NewsComment? foundComment = foundNews.Comments.Find(x => x.Id == commentId);
+        if (foundComment == null) return NotFound();
+        
+        _newsCommentsRepository.RemoveItem(foundComment);
+        await _newsRepository.SaveChanges();
+        
+        return Ok();
+    }
 }

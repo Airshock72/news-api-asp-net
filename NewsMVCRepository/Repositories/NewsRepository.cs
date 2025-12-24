@@ -44,4 +44,9 @@ public class NewsRepository
     {
         _context.News.Add(news);
     }
+
+    public async Task<int> CountNews(Guid id)
+    {
+        return await _context.News.CountAsync(x => x.Id == id);
+    }
 }

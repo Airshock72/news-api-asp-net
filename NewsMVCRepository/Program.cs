@@ -14,6 +14,7 @@ builder.Services.AddDbContext<TrainingDataContext>(options =>
 );
 
 builder.Services.AddScoped<NewsRepository>();
+builder.Services.AddScoped<NewsCommentsRepository>();
 
 var app = builder.Build();
 
