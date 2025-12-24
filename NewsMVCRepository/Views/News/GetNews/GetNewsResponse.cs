@@ -1,4 +1,4 @@
-﻿namespace NewsMVC.Views.News.GetNews;
+﻿namespace NewsMVCRepository.Views.News.GetNews;
 
 public record GetNewsResponse
 {

@@ -1,4 +1,4 @@
-﻿namespace NewsMVC.Views.News.PutNews;
+﻿namespace NewsMVCRepository.Views.News.PutNews;
 
 public record PutNewsRequest
 {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using NewsMVC.Models.News;
+using NewsMVCRepository.Models.News;
 
-namespace NewsMVC.Data;
+namespace NewsMVCRepository.Data;
 
 public class TrainingDataContext : DbContext
 {

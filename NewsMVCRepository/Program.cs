@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using NewsMVC.Data;
+using NewsMVCRepository.Data;
+using NewsMVCRepository.Repositories;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,8 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<TrainingDataContext>(options =>
         options.UseSqlite(builder.Configuration["ConnectionStrings:SQLiteDefault"])
 );
+
+builder.Services.AddScoped<NewsRepository>();
 
 var app = builder.Build();
 

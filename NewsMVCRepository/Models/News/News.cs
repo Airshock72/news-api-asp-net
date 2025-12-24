@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace NewsMVC.Models.News;
+namespace NewsMVCRepository.Models.News;
 
 public class News
 {

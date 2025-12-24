@@ -1,4 +1,4 @@
-﻿namespace NewsMVC.Views.News.PostNewsComment;
+﻿namespace NewsMVCRepository.Views.News.PostNewsComment;
 
 public record NewsCommentRequest
 {

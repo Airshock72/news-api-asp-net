@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace NewsMVC.Views.News.PostNews;
+namespace NewsMVCRepository.Views.News.PostNews;
 
 public record PostNewsRequest
 {
