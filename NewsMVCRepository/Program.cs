@@ -1,3 +1,4 @@
+using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using NewsMVCRepository.Data;
 using NewsMVCRepository.Repositories;
@@ -13,6 +14,7 @@ builder.Services.AddDbContext<TrainingDataContext>(options =>
         options.UseSqlite(builder.Configuration["ConnectionStrings:SQLiteDefault"])
 );
 
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 builder.Services.AddScoped<NewsRepository>();
 builder.Services.AddScoped<NewsCommentsRepository>();
 

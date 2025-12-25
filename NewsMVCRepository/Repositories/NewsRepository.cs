@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NewsMVCRepository.Data;
 using NewsMVCRepository.Models.News;
-using NewsMVCRepository.Views.News.GetAllNews;
 
 namespace NewsMVCRepository.Repositories;
 
@@ -23,9 +22,9 @@ public class NewsRepository
         _context.Remove(news);
     }
 
-    public async Task<News[]> GetAll()
+    public async Task<News[]> GetAll(CancellationToken cancellationToken = default)
     {
-        return await _context.News.ToArrayAsync();
+        return await _context.News.ToArrayAsync(cancellationToken);
     }
 
     public async Task SaveChanges()

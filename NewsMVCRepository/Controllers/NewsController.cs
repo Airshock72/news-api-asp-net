@@ -1,11 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using NewsMVCRepository.Common;
 using NewsMVCRepository.Models.News;
 using NewsMVCRepository.Repositories;
-using NewsMVCRepository.Views.News.GetAllNews;
 using NewsMVCRepository.Views.News.GetNews;
 using NewsMVCRepository.Views.News.PostNews;
-using NewsMVCRepository.Views.News.PostNewsComment;
 using NewsMVCRepository.Views.News.PutNews;
+using NewsMVCRepository.Views.NewsHandlers.GetAllNews;
+using NewsMVCRepository.Views.NewsHandlers.PostNewsComment;
 
 namespace NewsMVCRepository.Controllers;
 
@@ -13,14 +15,17 @@ namespace NewsMVCRepository.Controllers;
 [Route("[controller]")]
 public class NewsController : ControllerBase
 {
+    private readonly ISender _mediator;
     private readonly NewsRepository _newsRepository;
     private readonly NewsCommentsRepository _newsCommentsRepository;
 
     public NewsController(
+        ISender mediator,   
         NewsRepository newsRepository,
         NewsCommentsRepository newsCommentsRepository
     )
     {
+        _mediator = mediator;
         _newsRepository = newsRepository;
         _newsCommentsRepository = newsCommentsRepository;
     }
@@ -30,16 +35,9 @@ public class NewsController : ControllerBase
     [ProducesResponseType(typeof(GetAllNewsResponse[]), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAllNews()
     {
-        News[] allNews = await _newsRepository.GetAll();
-
-        GetAllNewsResponse[] response = allNews.Select(x => new GetAllNewsResponse
-        {
-            Id = x.Id,
-            Title = x.Title,
-            Date = x.Date
-        }).ToArray();
-    
-        return Ok(response);
+        GetAllNewsQuery query = new();
+        BaseResponse result = await _mediator.Send(query);
+        return StatusCode(result.StatusCode, result.Data);
     }
     
     [HttpGet]
