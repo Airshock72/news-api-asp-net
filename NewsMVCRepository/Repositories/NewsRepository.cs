@@ -32,11 +32,11 @@ public class NewsRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task<News?> GetItem(Guid id)
+    public async Task<News?> GetItem(Guid id, CancellationToken cancellationToken = default)
     {
         return await _context.News
             .Include(x => x.Comments)
-            .FirstOrDefaultAsync(x => x.Id == id);
+            .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
     }
 
     public void AddItem(News news)

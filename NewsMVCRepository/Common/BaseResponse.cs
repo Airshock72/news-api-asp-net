@@ -15,4 +15,9 @@ public record BaseResponse
     {
         return new(200, data);
     }
+    
+    public static BaseResponse NotFound(string? data)
+    {
+        return new(404, data);
+    }
 }

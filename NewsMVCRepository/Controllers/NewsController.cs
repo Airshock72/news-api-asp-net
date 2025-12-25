@@ -7,6 +7,7 @@ using NewsMVCRepository.Views.News.GetNews;
 using NewsMVCRepository.Views.News.PostNews;
 using NewsMVCRepository.Views.News.PutNews;
 using NewsMVCRepository.Views.NewsHandlers.GetAllNews;
+using NewsMVCRepository.Views.NewsHandlers.GetNews;
 using NewsMVCRepository.Views.NewsHandlers.PostNewsComment;
 
 namespace NewsMVCRepository.Controllers;
@@ -46,24 +47,9 @@ public class NewsController : ControllerBase
     [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetNews(Guid id)
     {
-        News? foundItem = await _newsRepository.GetItem(id);
-    
-        if (foundItem == null) 
-            return NotFound("ჩანაწერი ვერ მოიძებნა");
-    
-        return Ok(new GetNewsResponse
-        {
-            Id = foundItem.Id,
-            Content = foundItem.Content,
-            Title = foundItem.Title,
-            Date = foundItem.Date,
-            Comments = foundItem.Comments
-                .Select(x => new GetNewsResponseComments 
-                { 
-                    Id = x.Id, 
-                    Text = x.Text 
-                }).ToArray()
-        });
+        GetNewsQuery query = new() { Id = id };
+        BaseResponse result = await _mediator.Send(query);
+        return StatusCode(result.StatusCode, result.Data);
     }
     
     [HttpPost]
