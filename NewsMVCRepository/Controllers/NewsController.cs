@@ -3,12 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 using NewsMVCRepository.Common;
 using NewsMVCRepository.Models.News;
 using NewsMVCRepository.Repositories;
-using NewsMVCRepository.Views.News.PutNews;
 using NewsMVCRepository.Views.NewsHandlers.DeleteNews;
 using NewsMVCRepository.Views.NewsHandlers.GetAllNews;
 using NewsMVCRepository.Views.NewsHandlers.GetNews;
 using NewsMVCRepository.Views.NewsHandlers.PostNews;
 using NewsMVCRepository.Views.NewsHandlers.PostNewsComment;
+using NewsMVCRepository.Views.NewsHandlers.PutNews;
 
 namespace NewsMVCRepository.Controllers;
 
@@ -78,17 +78,11 @@ public class NewsController : ControllerBase
     [Route("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> PutNews(Guid id, PutNewsRequest response)
+    public async Task<IActionResult> PutNews(Guid id, PutNewsCommand command)
     {
-        News? foundItem = await _newsRepository.GetById(id);
-        if (foundItem == null) return NotFound();
-        
-        foundItem.Title = response.Title;
-        foundItem.Content = response.Content;
-        
-        await _newsRepository.SaveChanges();
-    
-        return Ok();
+        command.Id = id;
+        BaseResponse result = await _mediator.Send(command);
+        return StatusCode(result.StatusCode, result.Data);
     }
     
     [HttpPost]

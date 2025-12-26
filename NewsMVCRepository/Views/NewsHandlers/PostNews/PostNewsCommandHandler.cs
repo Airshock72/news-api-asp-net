@@ -23,7 +23,7 @@ public class PostNewsCommandHandler: IRequestHandler<PostNewsCommand, BaseRespon
         };
         
         _newsRepository.AddItem(newRequest);
-        await _newsRepository.SaveChanges();
+        await _newsRepository.SaveChanges(cancellationToken);
         
         return BaseResponse.Ok(newRequest.Id);
     }

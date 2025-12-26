@@ -27,9 +27,9 @@ public class NewsRepository
         return await _context.News.ToArrayAsync(cancellationToken);
     }
 
-    public async Task SaveChanges()
+    public async Task SaveChanges(CancellationToken cancellationToken = default)
     {
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync(cancellationToken);
     }
 
     public async Task<News?> GetItem(Guid id, CancellationToken cancellationToken = default)
