@@ -3,11 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 using NewsMVCRepository.Common;
 using NewsMVCRepository.Models.News;
 using NewsMVCRepository.Repositories;
-using NewsMVCRepository.Views.News.GetNews;
-using NewsMVCRepository.Views.News.PostNews;
 using NewsMVCRepository.Views.News.PutNews;
 using NewsMVCRepository.Views.NewsHandlers.GetAllNews;
 using NewsMVCRepository.Views.NewsHandlers.GetNews;
+using NewsMVCRepository.Views.NewsHandlers.PostNews;
 using NewsMVCRepository.Views.NewsHandlers.PostNewsComment;
 
 namespace NewsMVCRepository.Controllers;
@@ -55,19 +54,11 @@ public class NewsController : ControllerBase
     [HttpPost]
     [Route("")]
     [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
-    public async Task<IActionResult> PostNews(PostNewsRequest request)
+    public async Task<IActionResult> PostNews(PostNewsCommand command)
     {
-        News newRequest = new()
-        {
-            Date = DateTime.UtcNow,
-            Title = request.Title,
-            Content = request.Content
-        };
-
-        _newsRepository.AddItem(newRequest);
-        await _newsRepository.SaveChanges();
-    
-        return Ok(newRequest.Id);
+        BaseResponse result = await _mediator.Send(command);
+        return StatusCode(result.StatusCode, result.Data);
+        
     }
     
     [HttpDelete]

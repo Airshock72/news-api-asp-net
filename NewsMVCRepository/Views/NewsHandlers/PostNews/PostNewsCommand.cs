@@ -1,8 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using MediatR;
+using NewsMVCRepository.Common;
 
-namespace NewsMVCRepository.Views.News.PostNews;
+namespace NewsMVCRepository.Views.NewsHandlers.PostNews;
 
-public record PostNewsRequest
+public class PostNewsCommand: IRequest<BaseResponse>
 {
     [Required]
     [MaxLength(100)]

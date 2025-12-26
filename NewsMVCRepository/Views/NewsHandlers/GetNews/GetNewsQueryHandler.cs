@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using NewsMVCRepository.Common;
 using NewsMVCRepository.Repositories;
-using NewsMVCRepository.Views.News.GetNews;
 
 namespace NewsMVCRepository.Views.NewsHandlers.GetNews;
 
