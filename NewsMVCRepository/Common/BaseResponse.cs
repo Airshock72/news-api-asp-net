@@ -11,13 +11,18 @@ public record BaseResponse
         Data = data;
     }
 
-    public static BaseResponse Ok(object? data)
+    public static BaseResponse Ok(object? data = null)
     {
         return new(200, data);
     }
     
-    public static BaseResponse NotFound(string? data)
+    public static BaseResponse NotFound(string? data = null)
     {
         return new(404, data);
+    }
+    
+    public static BaseResponse NoContent()
+    {
+        return new(204, null);
     }
 }

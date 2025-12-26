@@ -4,6 +4,7 @@ using NewsMVCRepository.Common;
 using NewsMVCRepository.Models.News;
 using NewsMVCRepository.Repositories;
 using NewsMVCRepository.Views.News.PutNews;
+using NewsMVCRepository.Views.NewsHandlers.DeleteNews;
 using NewsMVCRepository.Views.NewsHandlers.GetAllNews;
 using NewsMVCRepository.Views.NewsHandlers.GetNews;
 using NewsMVCRepository.Views.NewsHandlers.PostNews;
@@ -67,14 +68,10 @@ public class NewsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteNews(Guid id)
     {
-        News? foundItem = await _newsRepository.GetById(id);
-    
-        if (foundItem == null) return NotFound();
-    
-        _newsRepository.RemoveItem(foundItem);
-        await _newsRepository.SaveChanges();
-    
-        return Ok();
+        DeleteNewsCommand command = new() { Id = id };
+        BaseResponse result = await _mediator.Send(command);
+        return StatusCode(result.StatusCode, result.Data);
+        
     }
     
     [HttpPut]
