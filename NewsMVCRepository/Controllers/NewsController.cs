@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using NewsMVCRepository.Common;
-using NewsMVCRepository.Models.News;
 using NewsMVCRepository.Repositories;
 using NewsMVCRepository.Views.NewsHandlers.DeleteNews;
 using NewsMVCRepository.Views.NewsHandlers.GetAllNews;
@@ -9,6 +8,10 @@ using NewsMVCRepository.Views.NewsHandlers.GetNews;
 using NewsMVCRepository.Views.NewsHandlers.PostNews;
 using NewsMVCRepository.Views.NewsHandlers.PostNewsComment;
 using NewsMVCRepository.Views.NewsHandlers.PutNews;
+using GetAllNewsResponse = NewsMVCRepository.Views.NewsHandlers.GetAllNews.GetAllNewsResponse;
+using GetNewsResponse = NewsMVCRepository.Views.NewsHandlers.GetNews.GetNewsResponse;
+using News = NewsMVCRepository.Models.News.News;
+using NewsComment = NewsMVCRepository.Models.News.NewsComment;
 
 namespace NewsMVCRepository.Controllers;
 
@@ -89,22 +92,11 @@ public class NewsController : ControllerBase
     [Route("{id}/Comments")]
     [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> PostNewsComment(Guid id, NewsCommentRequest request)
+    public async Task<IActionResult> PostNewsComment(Guid id, PostNewsCommentCommand request)
     {
-        int foundNews = await _newsRepository.CountNews(id);
-        if (foundNews == 0) return NotFound();
-    
-        NewsComment newComment = new NewsComment
-        {
-            Id = Guid.NewGuid(),
-            Text = request.Text,
-            NewsId = id
-        };
-        
-        _newsCommentsRepository.AddItem(newComment);
-        await _newsRepository.SaveChanges();
-        
-        return Ok(newComment.Id);
+        request.Id = id;
+        BaseResponse result = await _mediator.Send(request);
+        return StatusCode(result.StatusCode, result.Data);
     }
     
     [HttpDelete]
